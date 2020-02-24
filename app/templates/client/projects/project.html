@@ -1,0 +1,60 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    {{  super() }}
+    <div class="content-section">
+     <div class="outer">
+        <div class="middle">
+          <div class="inner">
+            <div class="center">
+                <h1>{{title}}</h1>
+                <br/>
+                {{ wtf.quick_form(form) }}
+                {%  if not add_project %}
+                    <div id="date_info">
+                    Created: {{ project.created_date }}<br/>
+                    Last updated: {{ project.updated_date }}
+                    </div>
+                {%  endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% block footer %} {{  super() }} {% endblock footer%}
+    </div>
+{% endblock content%}
+{% block help %}
+    <p>There are six pieces of information required in a project brief:</p>
+    <ul>
+    <li>The <em>Title</em> is a one-line summary of the project used to identify the project easily.</li>
+    <li>The <em>Academic year</em> is selected from a drop-down list.</li>
+    <li>The <em>Overview</em> is a longer description of the project. Students rely on this to form their ideas about
+        what the project involves. This section should include the goals, type of activity and the technology to be
+        used (if known). You should also highlight the attractive features of the project here.
+    </li>
+    <li>The <em>Deliverables</em> section lists the expected results from the project. Here, it is good to be specific:
+        if you are expecting a piece of software that should be clearly stated. Other deliverables could include reports,
+        design documentation, graphical assets, etc.
+    </li>
+    <li>The <em>Resources available</em> is another list, this time detailing what you can provide to the team to help
+        get the work done. This varies enormously from one project to another, and could include software or hardware
+        resources, workspace, documentation, etc. It is also a good idea to be specific about how much of your time
+        the students can expect to benefit from.
+    </li>
+    <li>The <em>Skills required</em> section lets you choose skills from a list. To pick more than one, use CTRL-Click
+        on a PC and Command-Click on a Mac. If you do not have a clear idea of the skills your project may require,
+        just choose something generic and a member of academic staff will be able to suggest something more specific.
+    </li>
+    </ul>
+    <p>Once your project brief has been saved, it will be reviewed by a member of academic staff who will discuss any
+    issues with you. Changes may be needed, for example, if the scope of the project is too broad, or if there is
+    anything that the students may not understand clearly. Staff have extensive experience of preparing instructions
+    for students and are in a good position to help make your project brief accessible.
+    </p>
+    <p>
+    After your project is submitted, it is not immediately visible to students. This is to allow an opportunity to
+    discuss the details and make any amendments that may be needed.
+    </p>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}Transitions{% endblock %}
+{% block content %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        <h1 style="text-align:center;">Transitions</h1>
+        {% if transitions %}
+          <hr class="intro-divider">
+          <div class="center">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th width="15%"> From status </th>
+                  <th width="15%"> To status </th>
+                  <th width="15%"> Admin only </th>
+                  <th width="15%"> Edit </th>
+                  <th width="15%"> Delete </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for transition in transitions %}
+                <tr>
+                  <td> {{ transition.from_status.domain.name }} {{ transition.from_status.name }} </td>
+                  <td> {{ transition.to_status.domain.name }} {{ transition.to_status.name }} </td>
+                  <td> {{ transition.admin_only }} </td>
+                  <td>
+                    <a href="{{ url_for('admin.edit_transition', id=transition.id) }}">
+                      <i class="fa fa-pencil"></i> Edit
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{{ url_for('admin.delete_transition', id=transition.id) }}">
+                      <i class="fa fa-trash"></i> Delete
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div style="text-align: center">
+        {% else %}
+          <div style="text-align: center">
+            <h3> No transitions have been added. </h3>
+            <hr class="intro-divider">
+        {% endif %}
+          <a href="{{ url_for('admin.add_transition') }}" class="btn btn-default btn-lg">
+            <i class="fa fa-plus"></i>
+            Add Transition
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% block footer %}{{  super() }}{% endblock footer%}
+{% endblock %}

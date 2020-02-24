@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% import 'macros.html' as m %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    {{  super() }}
+    <div class="content-section">
+     <div class="outer">
+        <div class="middle">
+          <div class="inner">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h1>{{ project.title }}</h1>
+                        <p>
+                            {% if project.client.is_student %}
+                                <p>Student project</p>
+                            {% elif project.client.company.web %}
+                                <a href="{{ project.client.company.web }}" target="blank">{{ project.client.company.name }}</a>
+                            {% else %}
+                                {{ project.client.company.name }}
+                            {% endif %}
+                            <br/>
+                            {% for skill in project.skills_required %}
+                                {% if loop.index > 1 %}
+                                ,
+                                {% endif %}
+                                {{ skill.skill_required.name }}
+                            {% endfor %}
+                        </p>
+                        <h3>Overview</h3>
+                        <p class="preserve_newlines">{{ project.overview }}</p>
+                        <h3>Deliverables</h3>
+                        <p class="preserve_newlines">{{ project.deliverables  }}</p>
+                        <h3>Resources</h3>
+                        <p class="preserve_newlines">{{ project.resources }}</p>
+                        <h3>Contact details</h3>
+                        {% if project.client.display_name_flag or project.client.display_email_flag or project.client.display_phone_flag %}
+                            {% if project.client.display_name_flag %}
+                            {{ project.client.first_name }} {{ project.client.last_name }}<br/>
+                            {% endif %}
+                            {% if project.client.display_email_flag %}<br/>
+                            Email: {{ project.client.email }}
+                            {% endif %}
+                            {% if project.client.display_phone_flag %}<br/>
+                            Phone: {{ project.client.telephone }}
+                            {% endif %}
+                        {% else %}
+                            The client will contact you after you form a team and register a bid for the project.<br/><br/>
+                        {% endif %}
+                        {% if project.client_id == current_user.id %}
+                            {% if project.status.name != 'Complete' %}
+                                <a class="btn btn-default" href="{{ url_for('student.edit_project', id=project.id) }}">Edit</a>
+                            {% endif %}
+                            {% for transition in transitions %}
+                                {% if transition.from_status_id == project.status_id %}
+                                    {{ m.status('project', 'student.transition', project.id, transition)}}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-4">
+                        {% if project.status.name == 'Taken' %}
+                            <h3>Project is taken</h3>
+                            {% if team_member != None %}
+                                <a href="{{url_for('student.edit_team', project_id=project.id, id=team_member.team_id) }}" class="btn btn-default">Manage bid</a>
+                            {% endif %}
+                        {% else %}
+                            <h3>Notes of interest</h3>
+                            {% if project.notes_of_interest | length == 0 %}
+                                <p>No interest yet</p>
+                            {% endif %}
+                            {% if team_member != None %}
+                                <a href="{{url_for('student.edit_team', project_id=project.id, id=team_member.team_id) }}" class="btn btn-default">Manage bid</a>
+                            {% elif not interest %}
+                                <a href="{{url_for('student.add_interest', id=project.id) }}" class="btn btn-default">Note your interest</a>
+                            {% else %}
+                                {% if not project.client.is_student or project.client_id == current_user.id %}
+                                    <a href="{{url_for('student.create_team', project_id=project.id, id=team_member.team_id) }}" class="btn btn-default">Register team</a>
+                                {% endif %}
+                                {% if flag %}
+                                    <a href="{{url_for('student.edit_flag', id=flag.id) }}" class="btn btn-default">Edit flag</a>
+                                {% elif not project.client.is_student or project.client_id == current_user.id %}
+                                    <a href="{{url_for('student.set_flag', id=project.id) }}" class="btn btn-default">Set flag</a>
+                                {% endif %}
+                            {% endif %}
+                            <ul class="interest">
+                            {% for note in project.notes_of_interest %}
+                                <li>
+                                    <a href="#" data-toggle="popover"
+                                       data-trigger="focus"
+                                       data-html=true
+                                       data-placement="left"
+                                       title="{{note.user.programme.title}}"
+                                       data-content="{{note.user.profile_comment}}
+                                       <br><br>
+                                        {% for skill in note.user.skills_offered %}
+                                            {% if loop.index > 1 %}, {% endif %}
+                                            {{ skill.skill_offered.name }}
+                                        {% endfor %}
+                                        <br><br>
+                                         <input id='email-address' value='{{ note.user.email }}'>
+                                         <a href='#' onclick='copy_email_address();'><span class='large-icon action-glyph glyphicon glyphicon-copy'></span></a> ">
+                                        {{ note.user.first_name }} {{ note.user.last_name }} <span class="glyphicon glyphicon-info-sign"></span></span>
+                                    </a>
+                                    {% if note.user.id == current_user.id and team_member == None and not flag %}
+                                        <a href="{{url_for('student.delete_interest', project_id=project.id, id=note.id) }}"
+                                           data-toggle="confirmation"
+                                           data-title="Delete your note of interest?"
+                                        ><span class="action-glyph glyphicon glyphicon-remove-circle"></span></a>
+                                    {%  endif %}
+                                    {% for flag in project.flags %}
+                                        {% if flag.user_id == note.user_id %}
+
+                                            <a href="#" data-toggle="popover"
+                                               data-trigger="focus"
+                                               data-html=true
+                                               data-placement="left"
+                                               data-content="{{flag.message}}
+                                                <br><br>
+                                                 <input id='email-address' value='{{ flag.user.email }}'>
+                                                 <a href='#' onclick='copy_email_address();'><span class='large-icon action-glyph glyphicon glyphicon-copy'></span></a> ">
+                                                <span class="blink action-glyph glyphicon glyphicon-flag"></span>
+                                            </a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% block footer %} {{  super() }} {% endblock footer%}
+{% endblock content%}
+{% block help %}
+    <p>This page allows you to see the details of the project, and to let other students know that you are interested in it.</p>
+    <p>You can register a note of interest by clicking the button on the right. This adds your name to the list of interested
+       people, and allows other students to see your profile text. To form a team, make contact with other people who have
+       registered notes of interest.</p>
+    <p>After registering a note of interest, rather than wait for something to happen, you can invite other students to
+        contact you by adding a flag. This lets other people know that you are actively forming a team for this project,
+        and they are more likely to contact you. When you flag a project, you can also add a message. This is useful,
+        for example, if you have two or three people already and you are specifically looking for people with certain skills.</p>
+    <p>Notes of interest are just the first stage of the process. To let the client know that you want to bid for the project
+       you need to assemble and register a team. You can do this by clicking the <em>Register team</em> button.</p>
+    <p>Please note that you cannot delete a note of interest if you are part of a team bidding for this project. If that
+    is the case, you must either remove yourself from the team, or delete the whole team first.</p>
+{% endblock %}

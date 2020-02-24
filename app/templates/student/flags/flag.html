@@ -1,0 +1,37 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}
+    {% if add_flag %}
+        Set Flag
+    {% else %}
+        Edit Flag
+    {% endif %}
+{% endblock %}
+{% block content %}
+<div class="content-section">
+ <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <div class="center">
+            {% if add_flag %}
+                <h1>Set Flag</h1>
+            {% else %}
+                <h1>Edit Flag</h1>
+            {% endif %}
+            <br/>
+            <form method='post' role='form'>
+                {{wtf.form_field(form.message)}}
+                <br/>
+                {{wtf.form_field(form.submit)}}
+                {% if not add_flag %}
+                    <a href="{{url_for('student.delete_flag', id=flag.id) }}" class="btn btn-default">Delete</a>
+                {% endif %}
+                {{ form.hidden_tag() }}
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% block footer %}{{  super() }}{% endblock footer%}
+{% endblock %}

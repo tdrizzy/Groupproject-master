@@ -1,0 +1,39 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+<div class="content-section">
+ <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <div class="center">
+            <h1>{{title}}</h1>
+            <br/>
+            <p>To:</p>
+{#            {{ recipients }}#}
+            {% for recipient in recipients %}
+                {% if loop.index < 7 %}
+                    <p>{{ recipient.first_name }} {{ recipient.last_name }} ({{ recipient.email }})</p>
+                {% endif %}
+                {% if loop.index == 7 %}
+                    <p>... (Total: {{ recipients | length }} recipients)</p>
+                {% endif %}
+            {% endfor %}
+            </p>
+            <br/>
+            <form id='email_form' method='post' role='form'>
+                {{ wtf.form_field(form.subject, autocomplete='off') }}
+                {{ wtf.form_field(form.message) }}
+                {{ form.hidden_tag() }}
+                {{ wtf.form_field(form.submit) }}
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="overlay">
+    <div class="cssload-clock"></div>
+</div>
+{% block footer %}{{  super() }}{% endblock footer%}
+{% endblock %}

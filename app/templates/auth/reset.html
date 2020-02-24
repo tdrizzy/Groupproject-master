@@ -1,0 +1,13 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}Reset password{% endblock %}
+{% block content %}
+<div class="content-section">
+  <div class="center">
+    <h1>Set a new password</h1>
+    <br/>
+    {{ wtf.quick_form(form) }}
+  </div>
+</div>
+{% block footer %} {{  super() }} {% endblock footer%}
+{% endblock %}

@@ -1,0 +1,67 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}
+    Company Details
+{% endblock %}
+{% block content %}
+<div class="content-section">
+ <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <div class="center">
+            <h1>Company Details</h1>
+            <br/>
+            <form method='post' role='form'>
+                {% for field in form %}
+                    {% if field.name == 'health_policy_flag' %}
+                        <hr/><h3>Health and Safety</h3>
+                    {% endif %}
+                    {% if field.name == 'data_policy_flag' %}
+                        <hr/><h3>Data protection</h3>
+                    {% endif %}
+                    {% if field.name == 'data_contact_first_name' %}
+                        <hr/><h3>Data protection contact</h3>
+                    {% endif %}
+
+                    {%  if field.type == 'RadioField' %}
+                        <div class='form-group yes-no'>
+                            <label class="control-label">
+                                {{field.label}}
+                            </label>
+                            {{wtf.form_field(field)}}
+                        </div>
+                    {% elif field.name[0:12] == "data_contact" %}
+                        <div class='short-horizontal'>
+                            {{wtf.form_field(field)}}
+                        </div>
+                    {% elif field.name == "submit" %}
+                        <br/>
+                        {{wtf.form_field(field)}}
+                    {% elif field.name != 'csrf_token' %}
+                        {{wtf.form_field(field)}}
+                    {% endif %}
+                {% endfor %}
+                {{ form.hidden_tag() }}
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block help %}
+    <p>
+        This page allows you to record your company details, and this information is required before a project is
+        released to students.
+    </p>
+    <p>
+        The questions in the lower part of the page (from <em>Health and Safety</em> onwards) are part of our quality
+        assurance process. Answering 'no' to a question does not prevent you from listing a project.
+    </p>
+    <p>
+        This information allows us to produce statistics on the kinds of organisations our students are working with.
+        It is also helpful for academic supervisors when they are advising students on their projects. Some are more
+        relevant to our main industrial placement modules. If you feel that a question is not relevant, please feel
+        free to answer 'no' or to leave the field blank.
+    </p>
+{% endblock %}

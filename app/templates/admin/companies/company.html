@@ -1,0 +1,58 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}
+    {% if add_company %}
+        Add Company
+    {% else %}
+        Edit Company
+    {% endif %}
+{% endblock %}
+{% block content %}
+<div class="content-section">
+ <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <div class="center">
+            {% if add_company %}
+                <h1>Add Company</h1>
+            {% else %}
+                <h1>Edit Company</h1>
+            {% endif %}
+            <br/>
+            <form method='post' role='form'>
+                {% for field in form %}
+                    {% if field.name == 'health_policy_flag' %}
+                        <hr/><h3>Health and Safety</h3>
+                    {% endif %}
+                    {% if field.name == 'data_policy_flag' %}
+                        <hr/><h3>Data protection</h3>
+                    {% endif %}
+                    {% if field.name == 'data_contact_first_name' %}
+                        <hr/><h3>Data protection contact</h3>
+                    {% endif %}
+
+                    {%  if field.type == 'RadioField' %}
+                        <div class='form-group yes-no'>
+                            <label class="control-label">
+                                {{field.label}}
+                            </label>
+                            {{wtf.form_field(field)}}
+                        </div>
+                    {% elif field.name[0:12] == "data_contact" %}
+                        <div class='short-horizontal'>
+                            {{wtf.form_field(field)}}
+                        </div>
+                    {% elif field.name == 'csrf_token' %}
+                        {{field}}
+                    {% elif field.name != 'csrf_token' %}
+                        {{wtf.form_field(field)}}
+                    {% endif %}
+                {% endfor %}
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% block footer %}{{  super() }}{% endblock footer%}
+{% endblock %}

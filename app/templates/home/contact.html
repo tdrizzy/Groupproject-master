@@ -1,0 +1,15 @@
+{% import "bootstrap/utils.html" as utils %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}Contact{% endblock %}
+{% block content %}
+<div class="content-section">
+  <br/>
+  <div class="center">
+    <h1>Contact us</h1>
+    <br/>
+    {{ wtf.quick_form(form) }}
+  </div>
+</div>
+    {% block footer %} {{  super() }} {% endblock footer%}
+{% endblock %}

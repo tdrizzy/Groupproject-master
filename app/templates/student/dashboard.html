@@ -1,0 +1,124 @@
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="content-section">
+    <div class="outer">
+        <div class="middle">
+            <div class="inner">
+                <br/>
+                <div class="container projects">
+                <div>
+                    {% if skill %}
+                        {{ skill }}
+                    {% else %}
+                        <select id="skill-filter">
+                            <option value="0">Filter by skill</option>
+                            {% for option, count in skills.items() %}
+                                <option value="{{ option[0] }}">{{ option[1] }} ({{ count }})</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                    {% if company %}
+                        {{ company }}
+                    {% else %}
+                        <select id="company-filter">
+                            <option value="0">Filter by company</option>
+                            {% for option, count in companies.items() %}
+                                <option value="{{ option[0] }}">{{ option[1] }} ({{ count }})</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                </div>
+                {% if projects %}
+                    {% for project in projects %}
+                        {% if (loop.index - 1) % 3  == 0 %}
+                            <div class="row">
+                        {% endif %}
+                          <div class="col-md-4">
+                            <div class="card m-t-2 {{ project.status.name }}">
+                                {% if project.status_id == 1 %}
+                                    <a id="{{ project.id }}-link" href="{{url_for('student.edit_project', id=project.id) }}">
+                                {% elif project.status_id == 3 %}
+                                    <a id="{{ project.id }}-link" href="{{url_for('student.project', id=project.id) }}">
+                                {% endif %}
+                                <div class="card-header">
+                                    {{ project.title }}
+                                </div>
+                                <div class="card-body">
+                                    {{ project.client.company.name }}
+                                    <br/>
+                                    {% for skill in project.skills_required %}
+                                        {% if loop.index > 1 %}
+                                        ,
+                                        {% endif %}
+                                        {{ skill.skill_required.name }}
+                                    {% endfor %}
+                                </div>
+                                {% if project.status_id == 3 %}
+                                    </a>
+                                {% endif %}
+                                <div class="card-footer">
+                                    {{ project.status.name }}
+                                    <div class="right-control">
+                                        {% for interest in project.notes_of_interest %}
+                                            {% if interest.user_id == current_user.id %}
+                                                <a href="{{url_for('student.project', id=project.id) }}" data-toggle="popover"
+                                                   data-trigger="hover"
+                                                   data-html=true
+                                                   data-placement="left"
+                                                   data-content="You have a note of interest on this project">
+                                                    <span class="action-glyph glyphicon glyphicon-star"></span>
+                                                </a>
+
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if project.flags | length > 0 %}
+                                            <a href="{{url_for('student.project', id=project.id) }}" data-toggle="popover"
+                                               data-trigger="hover"
+                                               data-html=true
+                                               data-placement="left"
+                                               data-content="There is active recruitment for this project - click for more information"
+                                                <span class="blink action-glyph glyphicon glyphicon-flag"></span>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                        {% if (loop.index - 1) % 3  == 2 %}
+                            </div><!-- /row -->
+                        {% endif %}
+                    {% endfor %}
+
+
+                {% else %}
+                  <div style="text-align: center">
+                    <h4> There are currently no projects available. Please check back later. </h4>
+                    <hr class="intro-divider">
+                {% endif %}
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    {% block footer %} {{  super() }} {% endblock footer%}
+{% endblock %}
+{% block help %}
+    <p>
+        The dashboard lists all of the available projects.
+    </p>
+    <p>
+        An icon is displayed to indicate projects where you have made a note of interest. If you want to remove your
+    note of interest, click through to the project details.
+    </p>
+    <p>
+        Where someone is actively recruiting a team for a project, a flag icon is displayed. You can click through
+    to find out who is recruiting.
+    </p>
+    <p>
+        Clicking on a project takes you to the details screen where you can find out more about the project,
+        make a personal note of interest and register a team bid.
+    </p>
+{% endblock %}

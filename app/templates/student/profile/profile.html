@@ -1,0 +1,35 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}
+    Profile
+{% endblock %}
+{% block content %}
+<div class="content-section">
+ <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <div class="center">
+            <h1>Profile</h1>
+            <br/>
+            <form method='post' role='form'>
+                {{ wtf.quick_form(form) }}
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block help %}
+    <p>The <em>Profile comment</em> text is a brief description of yourself. This can be seen by other students during
+    the team formation process. You should highlight your strengths in order to showcase your value as a potential
+    team member.
+    </p>
+    <p>You can advertise the skills you can offer by selecting appropriate items in the <em>Skills offered</em> list.
+    To select multiple items, use CTRL-click on a PC or Command-click on a Mac.
+    </p>
+    <p>
+    The other fields cannot be altered because they are set by the University's user directory system. In particular,
+    please note that all communications will be sent to your University email address.
+    </p>
+{% endblock %}

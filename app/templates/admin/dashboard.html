@@ -1,0 +1,98 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% import 'macros.html' as m %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+<div class="content-section">
+    <div class="outer">
+        <div class="middle">
+            <div class="inner">
+                <div class="wide-table dashboard row">
+                    <div id='left' class='column'>
+                        <div>
+                            {{ wtf.quick_form(form) }}
+                        </div>
+                        <div class="email-link">
+                            <a title='Email all students' href="{{url_for('admin.students_email', return_url='admin.dashboard')}}">
+                                 <span class="action-glyph glyphicon glyphicon-envelope"></span>Email all students
+                            </a>
+                        </div>
+                        <br><br>
+                        <div class="email-link">
+                            <a title='Email all clients' href="{{url_for('admin.clients_email', return_url='admin.dashboard')}}">
+                                 <span class="action-glyph glyphicon glyphicon-envelope"></span>Email all clients
+                            </a>
+                        </div>
+                        <br><br>
+                        <div class="email-link">
+                            <a title='Projects grid view' href="{{ url_for('staff.projects') }}">
+                                 <span class="action-glyph glyphicon glyphicon-th"></span>Projects grid view
+                            </a>
+                        </div>
+                        <br><br>
+
+                        <div class="card m-t-2 ">
+                            <a  href="{{url_for('admin.users') }}?filter=recent">
+                                <div class="card-header">
+                                    Logins
+                                </div>
+                                <div class="card-body">
+                                    <h4>
+                                        {{ logins.sum }} overall
+                                        <br/>
+                                        {{ logins_today.count }} today
+                                        <br/>
+                                        {{ logins_this_hour.count }} in the last hour
+                                    </h4>
+                                </div>
+                            </a>
+                        </div>
+
+                        {% if unconfirmed_companies | length > 0 %}
+                            <div class="card m-t-2 ">
+                                <a  href="{{url_for('admin.users')}}?filter=confirm">
+                                    <div class="card-header">
+                                        To do
+                                    </div>
+                                    <div class="card-body">
+                                        <h4>{{ unconfirmed_companies | length }} users require company confirmation</h4>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        <div class="card m-t-2 ">
+                            <a  href="{{url_for('admin.list_projects') }}">
+                                <div class="card-header">
+                                    Projects
+                                </div>
+                                <div class="card-body">
+                                    <div id="graph-1" class="card-chart"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="right" class="column">
+                        <h3>{{ chart_metadata[0].title }}</h3>
+                        <div id="graph-0" class="inset-chart"></div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% block footer %}
+    {{  super() }}
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript">
+        var graphs = {{chart_JSON | safe}};
+        for(var i in graphs) {
+            Plotly.newPlot('graph-'+i, // the ID of the div, created above
+                        graphs[i].data,
+                        graphs[i].layout || {margin: { t: 0 } });
+        }
+    </script>
+
+{% endblock footer%}
+{% endblock %}

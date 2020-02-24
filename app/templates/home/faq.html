@@ -1,0 +1,30 @@
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}FAQs{% endblock %}
+{% block content %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        <h1 style="text-align:center;">FAQs</h1>
+        {% if faqs %}
+          <hr class="intro-divider">
+          <div class="center">
+              {% for faq in faqs %}
+                  <h3> {{ faq.question }} </h3>
+                  <p> {{ faq.answer }} </p>
+              {% endfor %}
+          </div>
+          <div style="text-align: center">
+        {% else %}
+          <div style="text-align: center">
+            <h3> No FAQs have been added. </h3>
+            <hr class="intro-divider">
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

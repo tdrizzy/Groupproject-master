@@ -1,0 +1,87 @@
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}User confirmation{% endblock %}
+{% block content %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        <h1 style="text-align:center;">User confirmation</h1>
+        {% if users %}
+          <hr class="intro-divider">
+          <div class="center">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th width="20%"> Name </th>
+                  <th width="10%"> Validated </th>
+                  <th width="30%"> Company </th>
+                  <th width="10%"> Web </th>
+                  <th width="10%"> Profile complete </th>
+                  <th width="20%">  </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for user in users %}
+                    <tr>
+                      <td> {{ user.first_name }} {{ user.last_name }} </td>
+                      <td>
+                        {% if user.confirmation_token == None %}
+                          Yes
+                        {% else %}
+                          No
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if user.company %}
+                          {{ user.company.name }}
+                        {% else %}
+                          -
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if user.company %}
+                          {{ user.company.web }}
+                        {% else %}
+                          -
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if user.company %}
+                          {{ (100 * user.company.percent_complete) | round |int }}%
+                        {% else %}
+                          -
+                        {% endif %}
+                      </td>
+                      <td>
+                          {% if user.company %}
+                            <a
+                               href="{{ url_for('admin.confirm_user', id=user.id) }}"
+                               data-toggle="confirmation"
+                               data-title="Are you sure you want to confirm the company for this user?">
+                                <span class="large-icon action-glyph glyphicon glyphicon-ok-sign"></span>
+                            </a>
+                          {% else %}
+                              -
+                          {% endif %}
+                            <a href="{{url_for('admin.delete_user',
+                               id=user.id) }}"
+                               data-toggle="confirmation"
+                               data-title="Are you sure you want to delete this user?"
+                            >
+                               <span class="large-icon action-glyph glyphicon glyphicon-remove-sign"></span></a>
+                      </td>
+                    </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% block footer %}{{  super() }}{% endblock footer%}
+{% endblock %}

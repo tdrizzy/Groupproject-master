@@ -1,0 +1,43 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+<div class="content-section">
+    <div class="outer">
+        <div class="middle">
+            <div class="inner">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <h1>Settings</h1>
+                            <br/>
+                            {{ wtf.quick_form(form) }}
+                        </div>
+                        <div class="col-sm-4">
+                            <h3 class="side-subsection">Background jobs</h3>
+                            <ul>
+                            {% for job in all_jobs %}
+                                <li>
+                                {{ job }} is
+                                {%  if job in running %}
+                                    running
+                                {%  else %}
+                                    not running
+                                {% endif %}
+                                {%  if job in running %}
+                                    <a href="{{url_for('admin.remove_scheduled_job', id=job) }}" class="btn btn-default">Stop</a>
+                                {%  else %}
+                                    <a href="{{url_for('admin.add_scheduled_job', id=job) }}" class="btn btn-default">Start</a>
+                                {% endif %}
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% block footer %}{{  super() }}{% endblock footer%}
+{% endblock %}

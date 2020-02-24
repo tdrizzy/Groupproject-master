@@ -1,0 +1,39 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% import 'macros.html' as m %}
+{% block title %}
+    {% if add_team %}
+        Add Team
+    {% else %}
+        Edit Team
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {{  super() }}
+    <div class="content-section">
+     <div class="outer">
+        <div class="middle">
+          <div class="inner">
+            <div class="center">
+                {% if add_team %}
+                    <h1>Add Team</h1>
+                {% else %}
+                    <h1>Edit Team</h1>
+                    {{ m.team_email('admin.edit_team', team.id, team.id) }}
+                {% endif %}
+                <br/>
+                {{ wtf.quick_form(form) }}
+                {%  if not add_team %}
+                    <div id="date_info">
+                    Created: {{ team.created_date }}<br/>
+                    Last updated: {{ team.updated_date }}
+                    </div>
+                {%  endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% block footer %}{{  super() }}{% endblock footer%}
+{% endblock content%}

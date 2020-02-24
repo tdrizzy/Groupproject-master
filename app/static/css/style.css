@@ -1,0 +1,729 @@
+body, html {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+body, h1, h2, h3 {
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 700;
+}
+
+a, .navbar-default .navbar-brand, .navbar-default .navbar-nav>li>a {
+  color: #c31632;
+}
+
+a:hover, .navbar-default .navbar-brand:hover, .navbar-default .navbar-nav>li>a:hover {
+  color: #4D1A22;
+}
+
+a.action-link:hover  {
+    text-decoration: none;
+}
+a.action-link:focus  {
+    text-decoration: none;
+}
+
+footer {
+    padding: 50px 0;
+    background-color: #f8f8f8;
+    position: relative;
+    bottom: 0px;
+    width: 100%;
+}
+
+p.copyright {
+    margin: 15px 0 0;
+}
+
+.alert-info {
+    width: 50%;
+    margin: auto;
+    color: #687430;
+    background-color: #e6ecca;
+    border-color: #c31632;
+}
+
+.btn-default {
+    border-color: #c31632;
+    color: #c31632;
+}
+
+.btn-default:hover {
+    background-color: #c31632;
+    color: #ffffff;
+}
+
+.badge {
+    margin-right: 10px;
+}
+
+.btn-default .badge {
+    color: #c31632;
+    background-color: #fff;
+}
+
+.center {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+
+#change_academic_year {width: fit-content;}
+/*#change_academic_year_submit {position: absolute; top: -20px;}*/
+#change_academic_year_submit {display: none;}
+
+.content-section {
+    padding: 90px 0px 0px 0px;
+    min-height: 100%;
+    position: relative;
+    border-top: 1px solid #e7e7e7;
+}
+
+.content-text {
+    background-color: white;
+    border-width: 0px;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 11pt;
+}
+
+.disabled .dropdown-item{
+    color: #212529;
+    text-decoration: none;
+}
+
+.footer, .push {
+    clear: both;
+    height: 4em;
+}
+
+form #message {
+    min-height: 200px;
+}
+
+form #overview {
+    min-height: 200px;
+}
+
+form #deliverables {
+    min-height: 100px;
+}
+
+form #resources {
+    min-height: 100px;
+}
+
+form #skills_required {
+    min-height: 120px;
+}
+
+form #admin_notes {
+    min-height: 100px;
+}
+
+.info-text {
+    font-style: italic;
+    font-size: small;
+}
+
+.intro-divider {
+    width: 400px;
+    border-top: 1px solid #f8f8f8;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+
+.intro-header {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    text-align: center;
+    color: #f8f8f8;
+    background: url(../images/ice_lab_small.jpg) no-repeat center center;
+    background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+    height: 100%;
+}
+
+.intro-header-pale::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: .1;
+    filter: alpha(opacity=10);
+    z-index: -1;
+    background-size: cover;
+    background: url(../images/ice_lab.jpg) no-repeat center center;
+}
+
+.intro-header-pale {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    height: 100%;
+}
+
+.intro-message {
+    position: relative;
+    padding-top: 30%;
+    padding-bottom: 30%;
+}
+
+.intro-message > h1 {
+    margin: 0;
+    text-shadow: 3px 3px 5px rgba(0,0,0,0.6);
+    font-size: 5em;
+}
+
+.intro-message > h3 {
+    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+}
+
+.lead {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.topnav {
+    font-size: 14px;
+}
+
+.wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -4em;
+}
+
+.outer {
+    display: table;
+    /*position: absolute;*/
+    height: 70%;
+    width: 100%;
+}
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.action-glyph {
+    color: #337ab7;
+    margin-right: 10px;
+}
+
+.dashboard {
+    padding: 50px;
+}
+
+.dashboard .card {
+    border: 1px solid lightgray;
+    margin-bottom: 20px;
+    width: 300px;
+}
+
+.dashboard .card-header {
+    background-color: #efefef;
+    padding: 5px;
+}
+
+.dashboard .card-body {
+    text-decoration: none;
+    color: black;
+}
+
+.dashboard a {
+    text-decoration: none;
+}
+
+.dashboard .card:hover {
+    background-color: #f3f9ff;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: .25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #c31632;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
+.dropdown-item:hover {
+    color: #212529;
+    text-decoration: none;
+}
+
+.dropdown-item:active, .dropdown-item:active {
+    color: #212529;
+    text-decoration: none;
+  }
+
+.dropdown-item:disabled, .dropdown-item:disabled {
+    color: #212529;
+    background-color: transparent;
+}
+
+#date_info {font-style: italic; text-align: right}
+
+.navbar-collapse {
+    margin-top: 40px;
+}
+
+.navbar-toggle {
+    float: left;
+    margin-top: 16px;
+}
+
+#logo {
+    float: right;
+    margin-bottom: 10px;
+}
+
+#email-address {
+    outline: none;
+    border: none;
+}
+
+.email-link {
+    display: inline;
+}
+
+.blink {
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.filter-controls {
+    margin-left: 5%;
+}
+
+.filter-controls a {
+    text-decoration: None;
+    padding: 0 5px 0 5px;
+}
+
+.hidden {display: none;}
+
+.inset-chart {
+    float: right;
+}
+
+.interest li {
+    list-style: none;
+    font-size: medium;
+    margin: 10px 0px 0px -40px;
+}
+
+.interest a {
+    text-decoration: none;
+    color: black;
+}
+
+.interest a:hover {
+    text-decoration: none;
+    color: #337ab7;
+}
+
+.interest span {
+    color: #337ab7;
+}
+
+.interest span.blink {
+    color: #c31632;
+}
+
+.large-icon {
+    font-size: larger;
+}
+
+.popover-title {
+    color: black;
+}
+
+.preserve_newlines {
+    white-space: pre-wrap;
+}
+
+/*Cards*/
+
+.card-deck {
+  display: flex;
+  justify-content: space-around;
+  flex-flow: row wrap;
+  align-items: stretch;
+}
+
+.card {
+    margin: 10px;
+    background-color: white;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.card-inner {
+    height: 100%;
+    position: relative;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-body .modebar {
+      display: none !important;
+}
+
+.card-footer {
+    background-color: #fefefe;
+    padding: 5px;
+    flex-grow: 10;
+    display: flex;
+    align-content: flex-end;
+    flex-flow: wrap;
+}
+
+.projects .card {
+    border: 1px solid lightgray;
+    margin-bottom: 20px;
+    min-width: 300px;
+    max-width: 30%;
+}
+
+.projects a .card-body:hover {
+    background-color: #f3f9ff;
+}
+
+.projects a:visited {
+    text-decoration: none;
+    color: #c31632;
+}
+
+.projects .card-header {
+    background-color: #efefef;
+    padding: 5px;
+}
+
+.owner .card-header {
+    background-color: #c31632;
+    color: white;
+}
+
+.projects .Withdrawn .card-header {
+    color: gray;
+    padding: 5px;
+}
+
+.projects .Complete .card-header {
+    color: gray;
+    padding: 5px;
+}
+
+.projects .not-current .card-header{
+    color: slategray;
+}
+
+.projects .card-body {
+    text-decoration: none;
+    color: black;
+}
+
+.projects .Withdrawn .card-body {
+    text-decoration: none;
+    color: #a0a0a0;
+}
+
+.projects .Complete .card-body {
+    text-decoration: none;
+    color: #a0a0a0;
+}
+
+.projects a:hover {
+    text-decoration: none;
+}
+
+.live {
+    background-color: #aec251;
+}
+.taken {
+    background-color: lightblue;
+}
+
+.New {
+    background-color: #337ab7;
+}
+.Accepted, .Live, .Protected, .Submitted {
+    background-color: #669110;
+}
+.Declined {
+    background-color: firebrick;
+}
+.Shortlisted, .Relisted, .bids {
+    background-color: sandybrown ;
+}
+
+.tab-pane {
+    position: relative;
+}
+.team-contact {
+    font-weight: bold;
+    font-size: larger;
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    right: 10px;
+}
+.team-contact::before {
+    content: "Contact: ";
+}
+
+.team-member {
+    border-left: 1px dotted #a0a0a0;
+    padding-left: 20px;
+    margin-top: 20px;
+}
+
+.team-member-name {
+    font-size: large;
+
+}
+
+.right-control {
+    display: inline;
+    float: right;
+    padding-right: 20px;
+}
+
+.column {
+    float: left;
+    width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+#year-filter, #skill-filter, #company-filter {
+    margin: 0px 20px 20px 0px;
+}
+
+.team-table {
+    margin-bottom: 20px;
+}
+
+.team-table th {
+    min-width: 120px;
+}
+
+.team-table tr {
+    height: 40px;
+}
+
+.team-table tbody tr:last-child {
+    height: 100px;
+    vertical-align: bottom;
+}
+
+.yes-no .radio {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.yes-no label {
+    margin-right: 10px;
+}
+
+.wide-table {
+    width: 90%;
+    margin: 0 auto 0 auto;
+}
+
+.short-horizontal {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.short-horizontal input {
+    width: 300px;
+    margin-right: 10px;
+}
+
+.side-subsection {
+    margin-top: 110px;
+}
+
+/* Toast functionality. See https://www.w3schools.com/howto/howto_js_snackbar.asp */
+/* The toast - position it at the bottom and in the middle of the screen */
+.toast {
+    visibility: hidden; /* Hidden by default. Visible on click */
+    min-width: 250px; /* Set a default minimum width */
+    margin-left: -125px; /* Divide value of min-width by 2 */
+    text-align: center; /* Centered text */
+    border-radius: 8px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    right: 20px; /* Center the snackbar */
+    top: 100px; /* 30px from the bottom */
+}
+
+/* Show the toast when clicking on a button (class added with JavaScript) */
+.toast.show {
+    visibility: visible; /* Show the toast */
+    /* Add animation: Take 0.5 seconds to fade in and out the toast.
+   However, delay the fade out process for 2.5 seconds */
+   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+   animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the toast in and out */
+@-webkit-keyframes fadein {
+    from {top: 50px; opacity: 0;}
+    to {top: 100px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {top: 50px; opacity: 0;}
+    to {top: 100px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {top: 100px; opacity: 1;}
+    to {top: 150px; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {top: 100px; opacity: 1;}
+    to {top: 150px; opacity: 0;}
+}
+
+.toast-info {
+    background-color: #C6D8F7;
+    color: #000;
+}
+
+.toast-message {
+    background-color: #fff;
+    border: 1px solid #669110;
+    color: #669110;
+    font-weight: bold;
+}
+
+.toast-warning {
+    background-color: #FCFFD9;
+    color: #000;
+}
+
+.toast-error {
+    background-color: #fff;
+    border: 1px solid #c31632;
+    color: #c31632;
+    font-weight: bold;
+}
+
+/* Sidebar stuff from W3Schools */
+/* The side navigation menu */
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 90px; /* Stay at the top */
+    right: 0;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px;
+    padding-bottom: 100px;
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+    border: 1px solid #efefef;
+}
+
+/* The navigation menu links */
+.sidenav a {
+    padding: 4px 8px 8px 8px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #c31632;
+    display: block;
+    transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+    color: #4D1A22;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 0px;
+    font-size: 36px;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+    transition: margin-left .5s;
+    padding: 20px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+/* On phones, where width is less than 550px, make the logos fit better */
+@media screen and (max-width: 550px) {
+    .navbar {min-width: 100%}
+    .navbar-brand {margin: 0 auto 0 auto}
+    #logo img {width: 140px;}
+    .projex-logo img {width: 100px}
+    .content-section {padding: 50px 0px 0px 0px;}
+    .intro-divider {width: 200px;}
+}
+
+.title {
+    font: 25px arial, sans-serif;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    padding: 8px 8px 8px 8px;
+    background-color: #efefef;
+}
+
+#help {
+    background-color: #fff;
+    z-index: 999;
+    overflow-y: scroll;
+}
+
+.help-body {
+    padding: 0px 16px 8px 16px;
+    font-weight: normal;
+}
+
+.help-body em {
+    font-weight: bolder;
+}

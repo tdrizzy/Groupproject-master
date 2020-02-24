@@ -1,0 +1,95 @@
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% import 'macros.html' as m %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+<div class="content-section">
+    <div class="outer">
+        <div class="middle">
+            <div class="inner">
+            <div class="center">
+                <h3>{{ project.title }}</h3>
+                <br/>
+                    <div class="card">
+                        <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                        {% for team in bids %}
+                          <li class="nav-item">
+                            <a class="nav-link active" id="{{ team.id }}-tab" data-toggle="tab" href="#{{ team.id }}"
+                               role="tab" aria-controls="home" aria-selected="true" aria-expanded="true">Team {{ team.id }}</a>
+                          </li>
+                        {% endfor %}
+                        </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content" id="myTabContent">
+                                {% for team in bids %}
+                                    {% if loop.first %}
+                                        <div class="tab-pane fade active in" id="{{team.id}}" role="tabpanel" aria-labelledby="{{team.id}}-tab">
+                                    {% else %}
+                                        <div class="tab-pane fade" id="{{team.id}}" role="tabpanel" aria-labelledby="{{team.id}}-tab">
+                                    {% endif %}
+
+                                        <p><span class="badge {{ team.status.name }}">{{ team.status.name }}</span></p>
+                                        <p class="preserve_newlines">{{ team.comment }}</p>
+                                        {% for member in team.members %}
+                                            <div class="team-member">
+                                                <p class="team-member-name">{{ member.user.first_name }} {{ member.user.last_name }}</p>
+                                                {% if member.project_manager %}
+                                                    <div class="team-contact">{{ member.user.email }}</div>
+                                                {% endif %}
+                                                <p>{{ member.user.programme.title }}</p>
+                                                <p class="preserve_newlines">{{ member.user.profile_comment }}</p>
+                                            </div>
+                                        {% endfor %}
+
+                                        <br/><br/>
+
+                                        {% for transition in transitions %}
+                                            {% if transition.from_status_id == team.status_id %}
+                                                {{ m.status('team', 'client.bid_transition', team.id, transition)}}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if shortlist %}
+                                            {{ m.accept_shortlist(project.id) }}
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+    {% block footer %} {{  super() }} {% endblock footer%}
+{% endblock %}
+{% block help %}
+    <p>
+        Here you can see the details of teams bidding for your project. To move from one team to another, click on the red team number.
+    </p>
+    <p>The status of the bid is colour-coded at the top of the page. You can change the status by using the buttons at the bottom.
+    When you have made a change, the team(s) will be informed automatically.
+    </p>
+    <p>
+        If you <em>Accept</em> a bid, this will automatically decline any other bids, and all teams will get an alert message.
+    </p>
+    <p>
+        If you <em>Decline</em> or <em>Shortlist</em> a bid, only that one will be affected.
+    </p>
+    <p>
+        If you decide that you would like two teams to work on the project (independently and in parallel), you can shortlist them
+        and then click the <em>Accept shortlist</em> button. This will accept all bids shortlisted and decline any others.
+    </p>
+    <p>
+        The contact email displayed at the top of the page is to allow you to contact a team's project manager.
+    </p>
+    <p>
+        After accepting a bid, the next step will be to schedule a kick-off meeting. Usually this talkes place in the first week
+        of the trimester in which the project runs. However, once a bid has been accepted, you can make arrangements directly
+        with the team that are mutually convenient.
+    </p>
+
+{% endblock %}

@@ -1,0 +1,98 @@
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% import 'macros.html' as m %}
+{% block title %}Projects{% endblock %}
+{% block content %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        <h1 style="text-align:center;">Projects</h1>
+        {% if projects %}
+            <table class="wide-table table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th width="20%">Title</th>
+                  <th width="15%">Client</th>
+                  <th width="5%">Year</th>
+                  <th width="5%">Status</th>
+                  <th width="5%">Notes</th>
+                  <th width="5%">Flags</th>
+                  <th width="5%">Teams</th>
+                  <th width="30%">Notes</th>
+                  <th width="10%">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for project in projects %}
+                <tr>
+                  <td> {{ project.title }} </td>
+                  <td>
+                      {{ project.client.first_name }} {{ project.client.last_name }}
+                      <div class="right-control">
+                          {{m.email(title="Email client", return_url='admin.list_projects', id=project.client.id)}}
+                      </div>
+                      <br>
+                      {{ project.client.company.name }}
+                  </td>
+                  <td> {{ project.academic_year }} </td>
+                  <td class="{{ project.status.name | lower }}"> {{ project.status.name }}
+                      <select class="project_status_select" data-project="{{ project.id }}">
+                        <option value="">Change</option>
+                        {% for t in transitions | sort(attribute='to_status.name')%}
+                            {% if t.from_status_id == project.status_id %}
+                                <option value="{{ t.to_status_id }}">{{ t.to_status.action_text }}</option>
+                            {% endif %}
+                        {% endfor %}
+                      </select>
+                  </td>
+                  <td>
+                    {% if project.notes_of_interest %}
+                      {{ project.notes_of_interest|length }}
+                    {% else %}
+                      0
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if project.flags %}
+                      {{ project.flags|length }}
+                    {% else %}
+                      0
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if project.teams %}
+                      {{ project.teams|length }}
+                    {% else %}
+                      0
+                    {% endif %}
+                  </td>
+                  <td> {{ project.admin_notes }} </td>
+                  <td>
+                      {{ m.clear_notes(project.id) }}
+                      {{ m.edit('project', project.id) }}
+                      {{ m.delete('project', project.id) }}
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          <div style="text-align: center">
+        {% else %}
+          <div style="text-align: center">
+            <h3> No projects have been added. </h3>
+            <hr class="intro-divider">
+        {% endif %}
+            <br>
+          <a href="{{ url_for('admin.add_project') }}" class="btn btn-default btn-lg">
+            <i class="fa fa-plus"></i>
+            Add Project
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% block footer %}{{  super() }}{% endblock footer%}
+{% endblock %}

@@ -1,0 +1,62 @@
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}Flags{% endblock %}
+{% block content %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        <h1 style="text-align:center;">Flags</h1>
+        {% if flags %}
+          <hr class="intro-divider">
+          <div class="center">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th width="15%"> User </th>
+                  <th width="40%"> Project </th>
+                  <th width="15%"> Message </th>
+                  <th width="15%"> Edit </th>
+                  <th width="15%"> Delete </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for flag in flags %}
+                <tr>
+                  <td> {{ flag.user.first_name }} {{ flag.user.last_name }} </td>
+                  <td> {{ flag.project.title }} </td>
+                  <td> {{ flag.message }} </td>
+                  </td>
+                  <td>
+                    <a href="{{ url_for('admin.edit_flag', id=flag.id) }}">
+                      <i class="fa fa-pencil"></i> Edit 
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{{ url_for('admin.delete_flag', id=flag.id) }}">
+                      <i class="fa fa-trash"></i> Delete 
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div style="text-align: center">
+        {% else %}
+          <div style="text-align: center">
+            <h3> No flags have been added. </h3>
+            <hr class="intro-divider">
+        {% endif %}
+          <a href="{{ url_for('admin.add_flag') }}" class="btn btn-default btn-lg">
+            <i class="fa fa-plus"></i>
+            Add flag
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% block footer %}{{  super() }}{% endblock footer%}
+{% endblock %}

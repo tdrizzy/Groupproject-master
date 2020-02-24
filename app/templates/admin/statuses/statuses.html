@@ -1,0 +1,67 @@
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}Statuses{% endblock %}
+{% block content %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        <h1 style="text-align:center;">Statuses</h1>
+        {% if statuses %}
+          <hr class="intro-divider">
+          <div class="center">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th width="15%"> Name </th>
+                  <th width="15%"> Description </th>
+                  <th width="40%"> Domain </th>
+                  <th width="15%"> Action text </th>
+                  <th width="15%"> css class </th>
+                  <th width="15%"> Default for domain </th>
+                  <th width="15%"> Edit </th>
+                  <th width="15%"> Delete </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for status in statuses %}
+                <tr>
+                  <td> {{ status.name }} </td>
+                  <td> {{ status.description }} </td>
+                  <td> {{ status.domain.name }} </td>
+                  <td> {{ status.action_text }} </td>
+                  <td> {{ status.css_class }} </td>
+                  <td> {{ status.default_for_domain }} </td>
+                  <td>
+                    <a href="{{ url_for('admin.edit_status', id=status.id) }}">
+                      <i class="fa fa-pencil"></i> Edit 
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{{ url_for('admin.delete_status', id=status.id) }}">
+                      <i class="fa fa-trash"></i> Delete 
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div style="text-align: center">
+        {% else %}
+          <div style="text-align: center">
+            <h3> No statuses have been added. </h3>
+            <hr class="intro-divider">
+        {% endif %}
+          <a href="{{ url_for('admin.add_status') }}" class="btn btn-default btn-lg">
+            <i class="fa fa-plus"></i>
+            Add Status
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% block footer %}{{  super() }}{% endblock footer%}
+{% endblock %}

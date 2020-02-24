@@ -1,0 +1,71 @@
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}Vacancies{% endblock %}
+{% block content %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        <h1 style="text-align:center;">Vacancies</h1>
+        {% if teams %}
+            <table class="wide-table table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th width="25%">Project</th>
+                  <th width="5%">Team</th>
+                  <th width="15%">Contact</th>
+                  <th width="55%">Message</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for team in teams %}
+                <tr>
+                  <td> {{ team.project.title }}
+                      <div class="right-control">
+                            <a title="View" href="{{url_for('student.project', id=team.project.id) }}">
+                                <span class='large-icon action-glyph glyphicon glyphicon-share-alt'></span></a>
+                      </div>
+                  </td>
+                  <td> {{ team.id }} </td>
+                  <td>
+                      {% for member in team.members %}
+                          {% if member.user_id == team.created_by %}
+                              {{ member.user.first_name }} {{ member.user.last_name }}
+                              <br>
+                              <input id='email-address' value='{{ member.user.email }}'>
+                              <div class="right-control">
+                                <a title="Copy email address" href='#' onclick='copy_email_address();'>
+                                    <span class='large-icon action-glyph glyphicon glyphicon-copy'></span></a>
+                              </div>
+                          {% endif %}
+                      {% endfor %}
+                  </td>
+                  <td> {{ team.vacancies }} </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+        {% else %}
+          <div style="text-align: center">
+            <h3> No teams are currently advertising vacancies. </h3>
+            <hr class="intro-divider">
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% block footer %}{{  super() }}{% endblock footer%}
+{% endblock %}
+{% block help %}
+    <p>This page displays recruitment messages from people who have spaces in their teams. If you fit the requirements,
+    get in touch with the contact person listed and offer your services.
+    </p>
+    <p>
+    If you are the person posting the message and you want to remove it, just delete the text on the team page.
+        You can reach the team page via the project.
+    </p>
+
+{% endblock %}

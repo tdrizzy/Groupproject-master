@@ -1,0 +1,269 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}{{ title }} | ProjeX{% endblock %}
+{% import "bootstrap/fixes.html" as fixes %}
+
+{% block head %}
+    {{super()}}
+    {{fixes.ie8()}}
+    <link rel="icon" href="{{url_for('static', filename='images/icon.png')}}" type="image/png" sizes="16x16">
+{% endblock %}
+
+{% block styles %}
+    {{super()}}
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/clock.css')}}">
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+    {{super()}}
+    <script src="{{url_for('static', filename='scripts/bootstrap-confirmation.js')}}"></script>
+    <script src="{{url_for('static', filename='scripts/soc09109.js')}}"></script>
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg navbar-default navbar-fixed-top topnav" role="navigation">
+        <a class="navbar-brand projex-logo" href="/">
+            <img src="{{url_for('static', filename='images/projex64.png')}}">
+        </a>
+        <div id="logo">
+              <a class="navbar-brand topnav" href="{{ url_for('home.homepage') }}"><img src="{{url_for('static', filename='images/imgLogo50.gif')}}"></a>
+        </div>
+        <div class="container topnav">
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+          </div>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-left">
+                {% if current_user.is_authenticated %}
+{# ----------------- ADMIN MENU ---------------------#}
+                    {% if current_user.is_admin %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Data maintenance
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                              <a class="dropdown-item" href="{{ url_for('admin.list_academic_years') }}">Academic years</a>
+                              <a class="dropdown-item" href="{{ url_for('admin.alerts') }}">Alerts</a>
+                              <a class="dropdown-item" href="{{ url_for('admin.list_companies') }}">Companies</a>
+                              <a class="dropdown-item" href="{{ url_for('admin.list_domains') }}">Domains</a>
+                              <a class="dropdown-item" href="{{ url_for('admin.list_faqs') }}">FAQs</a>
+                              <a class="dropdown-item" href="{{ url_for('admin.list_flags') }}">Flags</a>
+                              <a class="dropdown-item" href="{{ url_for('admin.list_programmes') }}">Programmes</a>
+                              <a class="dropdown-item" href="{{ url_for('admin.list_projects') }}">Projects</a>
+                              <a class="dropdown-item" href="{{ url_for('admin.list_skills') }}">Skills</a>
+                              <a class="dropdown-item" href="{{ url_for('admin.list_statuses') }}">Statuses</a>
+                              <a class="dropdown-item" href="{{ url_for('admin.list_teams') }}">Teams</a>
+                              <a class="dropdown-item" href="{{ url_for('admin.list_transitions') }}">Transitions</a>
+                              <a class="dropdown-item" href="{{ url_for('admin.users') }}">Users</a>
+                            </div>
+                          </li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.update_settings') }}">Settings</a></li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Profile
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="profileDropdown">
+                            <a class="dropdown-item" href="{{ url_for('admin.profile') }}">Personal profile</a>
+                            <a class="dropdown-item" href="{{ url_for('auth.password') }}">Change password</a>
+                        </div>
+                      </li>
+                      <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="helpDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Help
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="helpDropdown">
+                            <a class="dropdown-item" href="{{ url_for('home.faq') }}">FAQ</a>
+                            <a class="dropdown-item" href="#" onclick="openNav();">Help on this page</a>
+                        </div>
+                      </li>
+{# ----------------- CLIENT MENU ---------------------#}
+                  {% elif current_user.is_external %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('client.projects') }}">Projects</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('client.add_project') }}">New project</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Profile
+                                {% if current_user.company.name == 'New company' %}
+                                    <span class="blink small glyphicon glyphicon-star"></span>
+                                {% endif %}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="profileDropdown">
+                                {%  if current_user.is_external %}
+                                    <a class="dropdown-item" href="{{ url_for('client.profile') }}">Personal profile</a>
+                                    {% if current_user.company.employees | length == 1 or current_user.company_confirmed %}
+                                        <a class="dropdown-item" href="{{ url_for('client.company') }}">Company details
+                                            {% if current_user.company.name == 'New company' %}
+                                                <span class="blink small glyphicon glyphicon-star"></span>
+                                            {% endif %}
+                                        </a>
+                                    {%  else %}
+                                        <span class="disabled"><a class="dropdown-item" href="#">Company details</a></span>
+                                    {% endif %}
+                                {% endif %}
+                                <a class="dropdown-item" href="{{ url_for('auth.password') }}">Change password</a>
+                            </div>
+                        </li>
+                      <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="helpDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Help
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="helpDropdown">
+                            <a class="dropdown-item" href="{{ url_for('home.faq') }}">FAQ</a>
+                            <a class="dropdown-item" href="#" onclick="openNav();">Help on this page</a>
+                        </div>
+                      </li>
+{# ----------------- STAFF MENU ---------------------#}
+                  {% elif current_user.is_staff %}
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="projectsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Projects
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="projectsDropdown">
+                            <a class="dropdown-item" href="{{ url_for('staff.projects') }}">All projects</a>
+                            <a class="dropdown-item" href="{{ url_for('staff.add_project') }}">New project</a>
+                            <a class="dropdown-item" href="{{ url_for('staff.my_projects') }}">My projects</a>
+                        </div>
+                      </li>
+
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Profile
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="profileDropdown">
+                            <a class="dropdown-item" href="{{ url_for('staff.profile') }}">Personal profile</a>
+                            <a class="dropdown-item" href="{{ url_for('auth.password') }}">Change password</a>
+                        </div>
+                      </li>
+                      <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="helpDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Help
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="helpDropdown">
+                            <a class="dropdown-item" href="{{ url_for('home.faq') }}">FAQ</a>
+                            <a class="dropdown-item" href="#" onclick="openNav();">Help on this page</a>
+                        </div>
+                      </li>
+{# ----------------- STUDENT MENU ---------------------#}
+                  {% else %}
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="projectsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Projects
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="projectsDropdown">
+                            <a class="dropdown-item" href="{{ url_for('student.projects') }}">Projects</a>
+                            <a class="dropdown-item" href="{{ url_for('student.add_project') }}">New project</a>
+                        </div>
+                      </li>
+
+                     <li class="nav-item"><a class="nav-link" href="{{ url_for('student.vacancies') }}">Vacancies</a></li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Profile
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="profileDropdown">
+                            <a class="dropdown-item" href="{{ url_for('student.profile') }}">Personal profile</a>
+                            <a class="dropdown-item" href="{{ url_for('auth.password') }}">Change password</a>
+                        </div>
+                      </li>
+                      <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="helpDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Help
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="helpDropdown">
+                            <a class="dropdown-item" href="{{ url_for('home.faq') }}">FAQ</a>
+                            <a class="dropdown-item" href="#" onclick="openNav();">Help on this page</a>
+                        </div>
+                      </li>
+                  {% endif %}
+{# ----------------- PUBLIC MENU ---------------------#}
+                {% else %}
+                  <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
+                  <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                  <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                {% endif %}
+
+            </ul>
+          </div>
+        </div>
+    <div id="help" class="sidenav">
+        <div class="title">
+            Help
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        </div>
+        <div class="help-body">
+            {% block help %}
+                There is no help information for this page.<br/>
+                If you are having difficulty, please contact the administrator using the contact link at the bottom of the page.
+            {% endblock %}
+        </div>
+    </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+      {% if messages %}
+        {% for category, message in messages %}
+            <div id="toast-{{ loop.index }}" class="toast toast-{{ category }}" role="alert" >
+                {{ message }}
+            </div>
+                <script type="text/javascript">
+                        var x = document.getElementById("toast-{{ loop.index }}");
+                        x.className += " show";
+                        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                </script>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+{% endblock navbar %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block footer %}
+    <div class="overlay">
+        <div class="cssload-clock"></div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="list-inline">
+                        <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
+                        <li class="footer-menu-divider">⋅</li>
+                        {% if current_user.is_authenticated %}
+                          <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                        {% else %}
+                          <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                          <li class="footer-menu-divider">⋅</li>
+                          <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                        {% endif %}
+                          <li class="footer-menu-divider">⋅</li>
+                         <li class="nav-item"><a class="nav-link" href="{{ url_for('home.privacy') }}">Privacy</a></li>
+                          <li class="footer-menu-divider">⋅</li>
+                        <li><a href="{{ url_for('home.faq') }}">FAQ</a></li>
+                          <li class="footer-menu-divider">⋅</li>
+                        <li><a href="{{ url_for('home.contact') }}">Contact</a></li>
+
+                    </ul>
+                    <p class="copyright text-muted small">© 2018 Edinburgh Napier University</p>
+                <p class="copyright text-muted small">Edinburgh Napier University is a registered Scottish charity. Registration SC018373</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock footer %}
+
+

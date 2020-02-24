@@ -1,0 +1,32 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block title %}{{ title }}
+{% endblock %}
+
+{% block content %}
+    {{  super() }}
+    <div class="content-section">
+     <div class="outer">
+        <div class="middle">
+          <div class="inner">
+            <div class="center">
+                <h1>{{ title }}</h1>
+                {% if not add_project %}
+                    {{ m.email('Email client', 'admin.edit_project', project.client_id, project.id) }}
+                {% endif %}
+                <br/>
+                {{ wtf.quick_form(form) }}
+                {%  if not add_project %}
+                    <div id="date_info">
+                    Created: {{ project.created_date }}<br/>
+                    Last updated: {{ project.updated_date }}
+                    </div>
+                {%  endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% block footer %}{{  super() }}{% endblock footer%}
+{% endblock content%}

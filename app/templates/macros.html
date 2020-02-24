@@ -1,0 +1,77 @@
+{% macro email(title="", return_url='', id=None, return_id=None) -%}
+    <div class="email-link">
+        <a title={{title}} href="{{url_for('admin.email', return_url=return_url, id=id, return_id=return_id) }}">
+             <span class="action-glyph glyphicon glyphicon-envelope"></span>
+        </a>
+    </div>
+{%- endmacro %}
+
+{% macro team_email(return_url='', id=None, return_id=None) -%}
+    <div class="email-link">
+        <a title='Email team {{ id }}' href="{{url_for('admin.team_email', return_url=return_url, id=id, return_id=return_id) }}">
+             <span class="action-glyph glyphicon glyphicon-envelope"></span>
+        </a>
+    </div>
+{%- endmacro %}
+
+{% macro delete(type, id) -%}
+    <a href="{{ url_for('admin.delete_' + type, id=id) }}"
+       data-toggle="confirmation"
+       data-title='Really delete this {{type}}?'>
+      <span class="large-icon action-glyph glyphicon glyphicon-remove"></span>
+    </a>
+{%- endmacro %}
+
+{% macro edit(type, id) -%}
+    <a title="Edit" href="{{ url_for('admin.edit_' + type, id=id) }}">
+      <span class="large-icon action-glyph glyphicon glyphicon-pencil"></span>
+    </a>
+{%- endmacro %}
+
+{% macro delete_by_code(type, code) -%}
+    <a href="{{ url_for('admin.delete_' + type, code=code) }}"
+       data-toggle="confirmation"
+       data-title='Really delete this {{type}}?'>
+      <span class="large-icon action-glyph glyphicon glyphicon-remove"></span>
+    </a>
+{%- endmacro %}
+
+{% macro edit_by_code(type, code) -%}
+    <a title="Edit" href="{{ url_for('admin.edit_' + type, code=code) }}">
+      <span class="large-icon action-glyph glyphicon glyphicon-pencil"></span>
+    </a>
+{%- endmacro %}
+
+{% macro clear_notes(id) -%}
+    <a href="{{ url_for('admin.clear_notes', id=id) }}"
+       data-toggle="confirmation"
+       data-title="Really delete all the notes?">
+      <span class="large-icon action-glyph glyphicon glyphicon-unchecked"></span>
+    </a>
+{%- endmacro %}
+
+{% macro status(type, endpoint, id, transition) -%}
+    <a href="{{url_for(endpoint, id=id, status_id=transition.to_status_id) }}"
+        data-toggle="confirmation"
+        {% if transition.to_status.name == 'Accepted' %}
+            data-title="This will automatically decline all other bids. Continue?"
+        {% else %}
+            data-title="Really {{ transition.to_status.action_text | lower }} this {{type}}?"
+        {% endif %}
+        class="btn btn-default">{{transition.to_status.action_text}}
+    </a>
+{%- endmacro %}
+
+{% macro accept_shortlist(id) -%}
+    <a href="{{url_for('client.accept_shortlist', id=id) }}"
+        data-toggle="confirmation"
+        data-title="This will accept all shortlisted teams and decline any others. Continue?"
+        class="btn btn-default">Accept shortlist
+    </a>
+{%- endmacro %}
+
+{% macro preview(id) %}
+    <a title="Preview" href="{{ url_for('admin.preview', id=id) }}">
+      <span class="large-icon action-glyph glyphicon glyphicon-zoom-in"></span>
+    </a>
+{% endmacro %}

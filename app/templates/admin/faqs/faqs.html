@@ -1,0 +1,66 @@
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}FAQs{% endblock %}
+{% block content %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        <h1 style="text-align:center;">FAQs</h1>
+        {% if faqs %}
+          <hr class="intro-divider">
+          <div class="center">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th width="15%"> Question </th>
+                  <th width="40%"> Answer </th>
+                  <th width="15%"> Rank </th>
+                  <th width="15%"> External </th>
+                  <th width="15%"> Student </th>
+                  <th width="15%"> Edit </th>
+                  <th width="15%"> Delete </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for faq in faqs %}
+                <tr>
+                  <td> {{ faq.question }} </td>
+                  <td> {{ faq.answer[0:100] }}{% if faq.answer|length > 100 %}...{% endif %} </td>
+                  <td> {{ faq.rank }} </td>
+                  <td> {{ faq.external }} </td>
+                  <td> {{ faq.student }} </td>
+                  </td>
+                  <td>
+                    <a href="{{ url_for('admin.edit_faq', id=faq.id) }}">
+                      <i class="fa fa-pencil"></i> Edit 
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{{ url_for('admin.delete_faq', id=faq.id) }}">
+                      <i class="fa fa-trash"></i> Delete 
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div style="text-align: center">
+        {% else %}
+          <div style="text-align: center">
+            <h3> No FAQs have been added. </h3>
+            <hr class="intro-divider">
+        {% endif %}
+          <a href="{{ url_for('admin.add_faq') }}" class="btn btn-default btn-lg">
+            <i class="fa fa-plus"></i>
+            Add FAQ
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% block footer %}{{  super() }}{% endblock footer%}
+{% endblock %}

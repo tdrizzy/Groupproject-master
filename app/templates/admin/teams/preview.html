@@ -1,0 +1,52 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    {{  super() }}
+    <div class="content-section">
+     <div class="outer">
+        <div class="middle">
+          <div class="inner">
+            <div class="center">
+                <h1>{{title}}</h1>
+                <br/>
+                <div class="card">
+                    <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="{{ team.id }}-tab" data-toggle="tab" href="#{{ team.id }}"
+                           role="tab" aria-controls="home" aria-selected="true" aria-expanded="true">Team {{ team.id }}</a>
+                      </li>
+                    </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade active in" id="{{team.id}}" role="tabpanel" aria-labelledby="{{team.id}}-tab">
+
+                                <p><span class="badge {{ team.status.name }}">{{ team.status.name }}</span></p>
+                                <p class="preserve_newlines">{{ team.comment }}</p>
+                                {% for member in team.members %}
+                                    <p>{{ member.user.first_name }} {{ member.user.last_name }}</p>
+                                    {% if member.project_manager %}
+                                        <div class="team-contact">{{ member.user.email }}</div>
+                                    {% endif %}
+                                    <p>{{ member.user.programme.title }}</p>
+                                    <p class="preserve_newlines">{{ member.user.profile_comment }}</p>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                        <a href="{{ url_for('admin.list_teams') }}" class="btn btn-default">Back</a>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% block footer %} {{  super() }} {% endblock footer%}
+{% endblock content%}
+{% block help %}
+    <p>This is how your team information will look to the client</p>
+{% endblock %}

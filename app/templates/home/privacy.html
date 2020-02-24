@@ -1,0 +1,30 @@
+{% import "bootstrap/utils.html" as utils %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}Privacy{% endblock %}
+{% block content %}
+<div class="content-section">
+  <br/>
+  <div class="center">
+    <h1>Privacy</h1>
+    <br/>
+      <p>Any data that you provide via this system is stored in a protected database,
+          and is only used for the purposes of managing student projects. This includes:</p>
+      <ul>
+          <li>Displaying project information to students</li>
+          <li>Sending you email updates on your posted projects</li>
+          <li>Sending you communications from University staff regarding current and future projects</li>
+      </ul>
+      <p>In addition, the system offers the option to display your email address to students so that
+          they can contact you directly regarding projects that you have posted.</p>
+      <h3>Cookies</h3>
+      <p>Cookies are used buy the site in order to maintain the connection to the server while you are
+      logged in. This is technically known as a session cookie without which the system would not work.
+      Cookies are not used for any other purpose.</p>
+      <p>Your data will be protected in line with the University's general
+          <a href="https://www.napier.ac.uk/privacy-policy" target="_blank">privacy policy</a>.</p>
+
+  </div>
+</div>
+    {% block footer %} {{  super() }} {% endblock footer%}
+{% endblock %}

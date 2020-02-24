@@ -1,0 +1,53 @@
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% import 'macros.html' as m %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        <h1 style="text-align:center;">{{title}}</h1>
+        {% if alerts %}
+          <div class="center">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th width="10%"> Code </th>
+                  <th width="20%"> Subject </th>
+                  <th width="60%"> Text </th>
+                  <th width="10%"> Actions </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for alert in alerts %}
+                <tr>
+                  <td> {{ alert.code }} </td>
+                  <td> {{ alert.subject }} </td>
+                  <td> {{ alert.message_text }} </td>
+                  <td>
+                      {{ m.edit_by_code('alert', alert.code) }}
+                      {{ m.delete_by_code('alert', alert.code) }}
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div style="text-align: center">
+        {% else %}
+          <div style="text-align: center">
+            <h3> No alerts have been added. </h3>
+            <hr class="intro-divider">
+        {% endif %}
+          <a href="{{ url_for('admin.add_alert') }}" class="btn btn-default btn-lg">
+            Add alert
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% block footer %}{{  super() }}{% endblock footer%}
+{% endblock %}

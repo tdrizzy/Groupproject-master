@@ -1,0 +1,33 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}
+    Profile
+{% endblock %}
+{% block content %}
+<div class="content-section">
+ <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <div class="center">
+            <h1>Profile</h1>
+            <br/>
+            <form method='post' role='form'>
+                {{ wtf.quick_form(form) }}
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block help %}
+    <p>Use this form to record your contact details.</p>
+    <p>The <em>Comment</em> text is a brief description of yourself. As a minimum, you could enter your job title, but
+    you can be more extensive if you wish. You can also leave this field blank if you prefer.
+    </p>
+    <p>You have options about which details are displayed to students. These are controlled by check boxes at the
+        bottom of the form. Students are advised to avoid unnecessary or excessive contact with clients; however, in
+        the early stages of the process, there may be many enquiries. These options allow you to control the flow of
+        communication.
+    </p>
+{% endblock %}

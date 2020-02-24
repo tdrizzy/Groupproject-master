@@ -1,0 +1,158 @@
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% import 'macros.html' as m %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="content-section">
+    <div class="outer">
+        <div class="middle">
+            <div class="inner">
+            <div class="center">
+                <br/>
+                {% if projects %}
+                    <div class="card">
+                        <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                        {% for project in projects %}
+                              <li class="nav-item">
+                                <a class="nav-link active" id="{{ project.id }}-tab" data-toggle="tab" href="#{{ project.id }}"
+                                   role="tab" aria-controls="home" aria-selected="true" aria-expanded="true">Project {{ loop.index }}</a>
+                              </li>
+                        {% endfor %}
+                        </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content" id="myTabContent">
+                                {% for project in projects %}
+                                    {% if loop.first %}
+                                        <div class="tab-pane fade active in" id="{{project.id}}" role="tabpanel" aria-labelledby="{{project.id}}-tab">
+                                    {% else %}
+                                        <div class="tab-pane fade" id="{{project.id}}" role="tabpanel" aria-labelledby="{{project.id}}-tab">
+                                    {% endif %}
+
+                                        <h4>{{ project.title }}</h4>
+                                        <p class="info-text">Academic year: {{ project.academic_year }}      Created: {{ project.created_date }}</p>
+                                        <p>
+                                            {% if project.status.name != 'Complete' %}
+                                                <a href="#" class="action-link" data-toggle="popover"
+                                                   data-trigger="focus"
+                                                   data-html=true
+                                                   data-placement="right"
+                                                   title="Project stats"
+                                                   data-content="{{project.notes_of_interest | length}} {% if project.notes_of_interest | length == 1 %}Note{% else %}Notes{% endif %} of interest <br>
+                                                       {{ project.flags | length }} {% if project.flags | length == 1 %}Flag{% else %}Flags{% endif %} <br>
+                                                       {{ new[project.id] }} New {% if new[project.id] == 1 %}team{% else %}teams{% endif %} <br>
+                                                       {{ bids[project.id] }} {% if bids[project.id] == 1 %}Bid{% else %}Bids{% endif %} <br><br>
+                                                       <em>Notes of interest</em> show how many students are thinking about your project. Students express interest in
+                                                       several projects, and so this in not an exact measure.
+                                                       Notes are removed when a student joins a team for the project, or is accepted on another
+                                                       project.<br><br>
+                                                       <em>Flags</em> show whether anyone is actively recruiting a team for your project.<br><br>
+                                                       <em>New teams</em> are those which do not yet have enough members to make a formal bid. <br><br>
+                                                       <em>Bids</em> include those which have been <em>submitted</em>, <em>shortlisted</em>, or <em>accepted</em>.
+                                                        ">
+                                                    <span class="action-glyph glyphicon glyphicon-stats"></span>
+                                                </a>
+                                            {% endif %}
+                                            <span class="badge {{ project.status.name }}">{{ project.status.name }}</span>: {{ project.status.description }}
+                                        </p>
+                                        <h5>Overview </h5>
+                                        <p class="preserve_newlines">{{ project.overview }}</p>
+                                        <h5>Deliverables </h5>
+                                        <p class="preserve_newlines">{{ project.deliverables }}</p>
+                                        <h5>Resources </h5>
+                                        <p class="preserve_newlines">{{ project.resources }}</p>
+                                        <h5>Skills required </h5>
+                                            {% for skill in project.skills_required %}
+                                                {{ skill.skill_required.name }}<br/>
+                                            {%  endfor %}
+
+                                        <br/><br/>
+
+                                        {% if project.status.name != 'Complete' %}
+                                            {% if bids[project.id] > 0 %}
+                                                <a href="{{ url_for('client.bids', id=project.id) }}" class="btn btn-default">
+                                                    {% if project.status.name == 'Taken' %}
+                                                        {% if bids[project.id] > 1 %}
+                                                            Teams
+                                                        {% else %}
+                                                            Team
+                                                        {% endif %}
+                                                    {% else %}
+                                                        Bids <span class="badge badge-info">{{ bids[project.id] }}</span>
+                                                    {% endif %}
+                                                </a>
+                                            {% else %}
+                                                <button type="button" class="btn btn-default disabled">
+                                                    Bids</span>
+                                                </button>
+                                            {% endif %}
+                                            <a href="{{url_for('client.edit_project', id=project.id) }}" class="btn btn-default">Edit</a>
+                                        {% endif %}
+                                        {% for transition in transitions %}
+                                            {% if transition.from_status_id == project.status_id %}
+                                                {{ m.status('project', 'client.transition', project.id, transition)}}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if project.status.name == 'Old' or project.status.name == 'Withdrawn' %}
+                                            <a href="{{ url_for('client.duplicate', id=project.id) }}" class="btn btn-default">
+                                                Copy for {{ academic_year.year }}
+                                            </a>
+                                        {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                {% else %}
+                  <div>
+                    {% include 'client/projects/new_client.html' %}
+                {% endif %}
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+    {% block footer %} {{  super() }} {% endblock footer%}
+{% endblock %}
+{% block help %}
+    <p>
+        This page gives you access to all of the features you need to manage your projects which are visible in the
+        central tabbed area. When your project is visible to students, you can check the level of interest by clicking
+        the <em>Project stats</em> icon <span class="glyphicon glyphicon-stats"></span> . When checking this information,
+        please remember that students will also be signalling their interest in other projects on the list. The numbers
+        are therefore not an exact reflection of the popularity of your project, and should only be used as an indication.
+    </p>
+    <p>
+        The menu items are self-explanatory and lead to other pages where further help information is available.
+    </p>
+        The <em>Bids</em> button shows how many teams are bidding on each project. Clicking it takes you to a page where
+        you can see the details of the bids and respond to them.
+    </p>
+    <p>
+        The other buttons below a project let you change its status. The available statuses are listed below:
+        <ul>
+            <li><em>New</em>: The project is being checked by academic staff and is not yet visible to the students.</li>
+            <li><em>Live</em>: The project is visible to the students and teams can make bids.
+                A project can only be moved to <em>Live</em> by a member of academic staff. Another requirement is
+                that you have completed your profile.
+            </li>
+            <li><em>Protected</em>: A project in this status is only visible to selected students. This can be used,
+                for example, when you have already decided on a team and you do not wish the project to be available
+                for other bids.
+            </li>
+            <li><em>Withdrawn</em>: A project in this status is no longer visible to students. This would be appropriate,
+                for example, when you change your mind or a project is no longer viable.
+            </li>
+            <li><em>Relisted</em>: A <em>Withdrawn</em> project can be relisted. This status requires checking by a member of
+                academic staff just like a <em>New</em> project. A project can also be relisted if an accepted team withdraws.
+            </li>
+            <li><em>Complete</em>: Once the project is over and you have taken delivery of the results,
+                the project's status should be updated to <em>Complete</em>.
+            </li>
+
+        </ul>
+    </p>
+{% endblock %}

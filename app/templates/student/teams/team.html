@@ -1,0 +1,126 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    {{  super() }}
+    <div class="content-section">
+     <div class="outer">
+        <div class="middle">
+          <div class="inner">
+            <div class="center">
+                <h1>{{title}}</h1>
+                <br/>
+                {% if not add_team %}
+                    <span class="badge {{ team.status.name }}">{{ team.status.name }}</span>: {{ team.status.description }}
+                {% endif %}
+                <br><br>
+                <form method='post' role='form'>
+                    {{ wtf.form_field(form.comment) }}
+                    {{ wtf.form_field(form.vacancies) }}
+
+                    {% if not add_team %}
+                        <h3>Team members</h3>
+                        <table class="team-table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Matric</th>
+                                <th>First name</th>
+                                <th>Last name</th>
+                                <th>Programme</th>
+                                <th>PM</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% if team.members | length == 1 %}
+                                    {% set confirm_message = 'This will delete the whole team - continue?' %}
+                                {% else %}
+                                    {% set confirm_message = 'Really delete this team member?' %}
+                                {% endif %}
+                                {% for member in team.members %}
+                                    <tr>
+                                        <td>{{ member.user.username }}</td>
+                                        <td>{{ member.user.first_name }}</td>
+                                        <td>{{ member.user.last_name }}</td>
+                                        <td>{{ member.user.programme.code }}</td>
+                                        <td>
+                                            {% if member.project_manager %}
+                                                <span class="action-glyph glyphicon glyphicon-check"></span>
+                                            {% else %}
+                                                <a href="{{url_for('student.make_pm', team_id=team.id, id=member.id) }}"
+                                                    data-toggle="confirmation"
+                                                    data-title="Make project manager?">
+                                                    <span class="action-glyph glyphicon glyphicon-unchecked"></span>
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                        <td><div class="right-control"><a href="{{url_for('student.delete_member', team_id=team.id, id=member.id) }}"
+                                               data-toggle="confirmation"
+                                               data-title="{{ confirm_message }}"
+                                            ><span class="action-glyph glyphicon glyphicon-remove-circle"></span></a></div></td>
+                                    </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td>{{ wtf.form_field(form.matric) }}</td>
+                                    <td span="4"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    {% endif %}
+                    {{ form.hidden_tag() }}
+                    {{ wtf.form_field(form.submit) }}
+                    {% if not add_team %}
+                        <a href="{{url_for('student.preview', id=team.id) }}"
+                           class="btn btn-default">Preview</a>
+                        {% if team.project.client_id == current_user.id %}
+                            <a href="{{url_for('student.complete_team', id=team.id) }}"
+                               class="btn btn-default">Complete</a>
+                        {% elif team.status.name == 'New' %}
+                            <a href="{{url_for('student.submit', id=team.id) }}"
+                               data-toggle="confirmation"
+                               data-title="Really submit this bid?"
+                               class="btn btn-default">Submit bid</a>
+                        {% endif %}
+                        <a href="{{url_for('student.delete_team', id=team.id) }}"
+                           data-toggle="confirmation"
+                           data-title="Really delete this team?"
+                           class="btn btn-default">
+                           {% if team.status.name == 'Submitted' or team.status.name == 'Accepted' or team.status.name == 'Shortlisted' %}
+                               Withdraw bid
+                           {% else %}
+                               Delete team
+                           {% endif %}
+                        </a>
+                        {% if team.status.name == 'Declined' and team.project.status.name == 'Live' %}
+                            <a href="{{url_for('student.submit', id=team.id) }}"
+                               data-toggle="confirmation"
+                               data-title="Really resubmit this bid?"
+                               class="btn btn-default">Resubmit</a>
+                        {% endif %}
+                    {% endif %}
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% block footer %} {{  super() }} {% endblock footer%}
+{% endblock content%}
+{% block help %}
+    <p>Use this page to maintain your team information.</p>
+    <p>The <em>Team profile comment</em> is visible to the project client. The content of this field should highlight the
+        strengths of the team and their suitability for the project. </p>
+    <p>Please note that the client will only be notified of your team bid when the team has a minimum of {{ settings.minimum_team_size }} members.
+    </p>
+    <p>Use the <em>PM</em> checkbox to indicate who is the project manager - this will help with communications with the client, as well as with the module staff.</p>
+    <p>
+    The <em>Vacancies message</em> is only visible to other students on the <em>Vacancies</em> page. You can use this field
+    to advertise any remaining places on your team.
+    </p>
+    <p>To add a new team member, enter their matric number in the field at the end of the list of members and click <em>Save</em>.
+    </p>
+    <p>To delete a team member, click the cross next to that person in the list.
+    </p>
+    <p>You can see how your information will appear to the client by clicking the <em>Preview</em> button.</p>
+{% endblock %}
